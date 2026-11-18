@@ -43,6 +43,14 @@ build/src/fastd --config fastd.conf
 See [man page](doc/fastd.1) and [documentation](doc/source/index.rst) for
 configuration options, peer files and MTU selection.
 
+Enable TCP BBR on both endpoints for full single-stream throughput over
+higher-latency links:
+
+```sh
+sysctl -w net.core.default_qdisc=fq
+sysctl -w net.ipv4.tcp_congestion_control=bbr
+```
+
 ## license
 
 [BSD-2-Clause](LICENSE)
