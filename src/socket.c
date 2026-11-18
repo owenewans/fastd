@@ -51,6 +51,12 @@ static int bind_socket(const fastd_bind_address_t *addr, bool reuseaddr_early) {
 #endif
 
 	const int one = 1;
+	const int buffer_size = 4 * 1024 * 1024;
+
+	if (setsockopt(fd, SOL_SOCKET, SO_RCVBUF, &buffer_size, sizeof(buffer_size)))
+		pr_warn_errno("setsockopt: unable to set SO_RCVBUF");
+	if (setsockopt(fd, SOL_SOCKET, SO_SNDBUF, &buffer_size, sizeof(buffer_size)))
+		pr_warn_errno("setsockopt: unable to set SO_SNDBUF");
 
 #ifdef USE_PKTINFO
 	if (setsockopt(fd, IPPROTO_IP, IP_PKTINFO, &one, sizeof(one))) {
